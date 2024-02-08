@@ -1,13 +1,12 @@
 import css from '/src/components/ImageGallery/ImageGallery.module.css';
-// import axios from 'axios';
 
 const imagesGallery = ({ items }) => {
   return (
-    <ul>
-      {items.map(({ id, url, title }) => (
+    <ul className={css.styleList}>
+      {items.map(({ id, urls: { small }, slug }) => (
         <li key={id}>
           <div>
-            <img src={url} alt="cat" />
+            <img src={small} alt={slug} />
           </div>
         </li>
       ))}
