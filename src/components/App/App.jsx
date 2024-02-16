@@ -1,16 +1,23 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import SearchBar from '/src/components/SearchBar/SearchBar.jsx';
 import ImagesGallery from '/src/components/ImageGallery/ImageGallery.jsx';
 import { FallingLines } from 'react-loader-spinner';
 import css from '/src/components/App/App.module.css';
+// import fetchImages from '/src/api';
+// import Modal from '/src/components/Modal/Modal.jsx';
+import axios from 'axios';
 
 function App() {
+  //useStates
   const [message, setMessage] = useState('');
   const [pictures, setPictures] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
+
+  // const [modalIsOpen, setIsOpen] = React.useState(false);
+
+  const API_KEY = 'dG5L3_N7jK2vmib_YSZnWSNFPM_wV1uL5IP8cLRXGvs';
 
   const searchPictures = async newMessage => {
     setMessage(`${Date.now()}/${newMessage}`);
@@ -22,6 +29,8 @@ function App() {
     setPage(page + 1);
   };
 
+  //useEfeect
+
   useEffect(() => {
     if (message === '') {
       return;
@@ -32,9 +41,9 @@ function App() {
         setLoading(true);
         setError(false);
         const request = await axios.get(
-          'https://api.unsplash.com/photos/?page=1&query=photo&per_page=10&client_id=8WljGh1dq48AOFZW3zSlYSx3-vUvfxbCL-dKI_bgnUY'
+          `https://api.unsplash.com/photos/?page=${page}&query=${message}&per_page=5&client_id=${API_KEY}`
         );
-        setPictures(allPictures => [...allPictures, ...request]);
+        setPictures(allPictures => [...allPictures]);
       } catch (error) {
         setError(true);
       } finally {
@@ -57,9 +66,12 @@ function App() {
       )}
       {error && <p> Whoops, something went wrong!Please try reloading this page! </p>}
       {pictures.length > 0 && !loading && <ImagesGallery items={pictures} />}
-      <button className={css.moreButton} onClick={handleLoadMore}>
-        Load more
-      </button>
+      {pictures.length > 0 && (
+        <button className={css.moreButton} onClick={handleLoadMore}>
+          Load more
+        </button>
+      )}
+      {/* <Modal modalIsOpen={modalIsOpen} setIsOpen={setIsOpen} /> */}
     </div>
   );
 }

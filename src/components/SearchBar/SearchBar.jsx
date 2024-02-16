@@ -6,8 +6,7 @@ const SearchBar = ({ onSearch }) => {
     evt.preventDefault();
 
     if (evt.target.elements.message.value.trim() === '') {
-      toast.error('Add some text');
-      return;
+      return toast.error('Add some text');
     }
 
     onSearch(evt.target.elements.message.value);
